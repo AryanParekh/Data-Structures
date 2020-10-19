@@ -76,6 +76,7 @@ int delete(Node **p,int value){
         prev->next=temp->next;
     }
     free(temp);
+    return 1;
 }
 
 //Displaying all elements in single linked list
