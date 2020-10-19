@@ -67,9 +67,6 @@ int preced(char op)
 char* postfix(char x[]){
     char y[SIZE];
     int i,j,l;
-    // for(i=0;i<strlen(x);i++){
-    //     y[i]=x[i];
-    // }
     strcpy(y,x);
     char *post=(char*)malloc(strlen(y));
     Stack s;
