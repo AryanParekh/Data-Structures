@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//Structure to store Node
+typedef struct Node{
+    int data;
+    struct Node *next;
+}Node;
+
+//Adding element at the end of single linked list
+int add(Node **p,int value){
+    Node *newnode=(Node *)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->data=value;
+    newnode->next=NULL;
+    if(*p==NULL) *p=newnode;
+    else{
+        Node *temp=*p;
+        while(temp->next!=NULL) temp=temp->next;
+        temp->next=newnode;
+    }
+    return 1;
+}
+
+//Inserting element after a given element in single linked list
+int insertAfter(Node *p,int after,int value){
+    if(p==NULL) return 0;
+    while(p!=NULL && p->data!=after) p=p->next;
+    if(p==NULL) return 0;
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->data=value;
+    newnode->next=p->next;
+    p->next=newnode;
+    return 1;
+}
+
+//Inserting element before a given element in single linked list
+int insertBefore(Node **p,int before,int value){
+    if(*p==NULL) return 0;
+    if((*p)->data==before){
+        Node *newnode=(Node*)malloc(sizeof(Node));
+        if(newnode==NULL) return 0;
+        newnode->data=value;
+        newnode->next=*p;
+        *p=newnode;
+    }
+    else{
+        Node *temp=*p,*prev=NULL;
+        while(temp!=NULL && temp->data!=before){
+            prev=temp;
+            temp=temp->next;
+        }
+        if(temp==NULL) return 0;
+        Node *newnode=(Node*)malloc(sizeof(Node));
+        if(newnode==NULL) return 0;
+        newnode->data=value;
+        newnode->next=temp;
+        prev->next=newnode;
+    }
+    return 1;
+}
+
+//Deleting element in single linked list
+int delete(Node **p,int value){
+    if(*p==NULL) return 0;
+    Node *temp=*p;
+    if((*p)->data==value) *p=(*p)->next;
+    else{
+        Node *prev=NULL;
+        while(temp!=NULL && temp->data!=value){
+            prev=temp;
+            temp=temp->next;
+        }
+        if(temp==NULL) return 0;
+        prev->next=temp->next;
+    }
+    free(temp);
+}
+
+//Displaying all elements in single linked list
+void display(Node *p){
+    while(p!=NULL){
+        printf("%d\t",p->data);
+        p=p->next;
+    }
+}
+
+int main()
+{
+    Node *start=NULL;
+    add(&start,10);
+    add(&start,20);
+    add(&start,30);
+    add(&start,40);
+    add(&start,50);
+    insertAfter(start,30,35);
+    insertBefore(&start,10,0);
+    delete(&start,0);
+    delete(&start,35);
+    
+    display(start);
+    
+
+    return 0;
+}

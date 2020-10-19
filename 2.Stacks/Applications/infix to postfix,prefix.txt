@@ -1,0 +1,146 @@
+// Online C compiler to run C program online
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define SIZE 20
+
+//structure of stack
+typedef struct Stack{
+    int a[SIZE];
+    int top;
+}Stack;
+
+//To initialize stack 
+void init(Stack *s){
+    s->top=-1;
+}
+
+//to check if stack is empty
+int empty(Stack s){
+    return s.top==-1;
+}
+
+//to push into the stack
+int push(Stack *s,int value){
+    if(s->top==SIZE-1) return -1;
+    s->a[++s->top]=value;
+    return 1;
+}
+
+//to pop the last inserted value out of stack
+int pop(Stack *s){
+    if(empty(*s)) return -1;
+    return s->a[s->top--];
+}
+
+//to peek the last inserted value in the stack
+int peek(Stack s){
+    if(empty(s)) return -1;
+    return s.a[s.top];
+}
+
+//to display the stack
+void display(Stack s){
+    int i;
+    for(i=0;i<=s.top;i++) printf("%d\t",s.a[i]);
+}
+
+//to give preference to operators
+int preced(char op)
+{
+    switch(op)
+    {
+        case '*':
+        case '/':
+        case '%':
+            return 3;
+        case '+':
+        case '-':
+            return 2;
+        case '(':
+        case ')':
+            return 1;
+    }
+    return 0;
+}
+
+//to convert infix expression to postfix
+char* postfix(char x[]){
+    char y[SIZE];
+    int i,j,l;
+    for(i=0;i<strlen(x);i++){
+        y[i]=x[i];
+    }
+    char *post=(char*)malloc(strlen(y));
+    Stack s;
+    init(&s);
+    y[strlen(y)]=')';
+    push(&s,'(');
+    for(i=0;i<strlen(y);i=i+1){
+        if(y[i]=='('){
+            push(&s,y[i]);
+        }
+        else if(y[i]==')'){
+            while(peek(s)!='('){
+                char p=(char)pop(&s);
+                post[strlen(post)]=p;
+            }
+            if(peek(s)=='('){
+                pop(&s);
+            }
+            
+        }
+        else if(preced(y[i])>1){
+            while(preced(y[i])<=preced(peek(s))){
+                char p=(char)pop(&s);
+                post[strlen(post)]=p;
+            }
+            push(&s,y[i]);
+        }
+        else{
+            char p=(char)y[i];
+            post[strlen(post)]=p;
+        }
+    }
+    while(!empty(s)){
+        char p=(char)pop(&s);
+        post[strlen(post)]=p;
+    }
+    return (char*)post;
+}
+
+//to convert infix expression to prefix
+char* prefix(char x[]){
+    int i,j,c;
+    char *y=(char*)malloc(strlen(x));
+    j=0;
+    for(i=strlen(x)-1;i>=0;i--,j++){
+        if (x[i]==')') y[j]='(';
+        else if (x[i]=='(') y[j]=')';
+        else y[j]=x[i];
+    }
+    char *post=postfix(y);
+    free(y);
+    char *pre=(char*)malloc(strlen(x));
+    c=0;
+    while(post[c]!='\0') c++;
+    for(j=c-1;j>=0;j--){
+        pre[strlen(pre)]=post[j];
+    }
+    return (char*)pre;
+}
+
+int main()
+{
+    char a[SIZE]="a+b*c";
+    char*post;
+    char*pre;
+    post=postfix(a);
+    pre=prefix(a);
+    printf("%s\n",post);
+    printf("%s\n",pre);
+    free(post);
+    free(pre);
+    
+    return 0;
+}

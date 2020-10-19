@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//Structure to store Node
+typedef struct Node{
+    int data;
+    struct Node *next;
+    struct Node *prev;
+}Node;
+
+//Adding element at the end of double linked list
+int add(Node **p,int value){
+    Node *newnode=(Node *)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->data=value;
+    newnode->next=NULL;
+    if(*p==NULL){
+        newnode->prev=NULL;
+        *p=newnode;
+    } 
+    else{
+        Node *temp=*p;
+        while(temp->next!=NULL) temp=temp->next;
+        temp->next=newnode;
+        newnode->prev=temp;
+    }
+    return 1;
+}
+
+//Inserting element after a given element in double linked list
+int insertAfter(Node *p,int after,int value){
+    if(p==NULL) return 0;
+    while(p!=NULL && p->data!=after) p=p->next;
+    if(p==NULL) return 0;
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->data=value;
+    newnode->next=p->next;
+    newnode->prev=p;
+    if(newnode->next!=NULL) newnode->next->prev=newnode;
+    p->next=newnode;
+    return 1;
+}
+
+//Inserting element before a given element in double linked list
+int insertBefore(Node **p,int before,int value){
+    if(*p==NULL) return 0;
+    if((*p)->data==before){
+        Node *newnode=(Node*)malloc(sizeof(Node));
+        if(newnode==NULL) return 0;
+        newnode->data=value;
+        newnode->next=*p;
+        newnode->prev=NULL;
+        (*p)->prev=newnode;
+        *p=newnode;
+    }
+    else{
+        Node *temp=*p;
+        while(temp!=NULL && temp->data!=before) temp=temp->next;
+        if(temp==NULL) return 0;
+        Node *newnode=(Node*)malloc(sizeof(Node));
+        if(newnode==NULL) return 0;
+        newnode->data=value;
+        newnode->next=temp;
+        newnode->prev=temp->prev;
+        temp->prev->next=newnode;
+        temp->prev=newnode;
+    }
+    return 1;
+}
+
+//Deleting element in double linked list
+int delete(Node **p,int value){
+    if(*p==NULL) return 0;
+    Node *temp=*p;
+    if((*p)->data==value){ 
+        *p=(*p)->next;
+        (*p)->prev=NULL;
+    }
+    else{
+        while(temp!=NULL && temp->data!=value) temp=temp->next;
+        if(temp==NULL) return 0;
+        temp->prev->next=temp->next;
+        if(temp->next!=NULL) temp->next->prev=temp->prev;
+    }
+    free(temp);
+    return 1;
+}
+
+//Displaying all elements in double linked list
+void display(Node *p){
+    while(p!=NULL){
+        printf("%d\t",p->data);
+        p=p->next;
+    }
+    printf("\n");
+}
+
+//Displaying all elements in reverse in double linked list
+void displayReverse(Node *p){
+    while(p->next!=NULL) p=p->next;
+    while(p!=NULL){
+        printf("%d\t",p->data);
+        p=p->prev;
+    }
+    printf("\n");
+}
+
+
+int main()
+{
+    Node *start=NULL;
+    add(&start,10);
+    add(&start,20);
+    add(&start,30);
+    add(&start,40);
+    add(&start,50);
+    insertAfter(start,30,35);
+    insertBefore(&start,10,0);
+    delete(&start,0);
+    delete(&start,35);
+    
+    display(start);
+    displayReverse(start);
+    
+
+    return 0;
+}
+

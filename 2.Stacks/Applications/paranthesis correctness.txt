@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define SIZE 20
+
+//structure of stack
+typedef struct Stack{
+    int a[SIZE];
+    int top;
+}Stack;
+
+//To initialize stack 
+void init(Stack *s){
+    s->top=-1;
+}
+
+//to check if stack is empty
+int empty(Stack s){
+    return s.top==-1;
+}
+
+//to push into the stack
+int push(Stack *s,int value){
+    if(s->top==SIZE-1) return -1;
+    s->a[++s->top]=value;
+    return 1;
+}
+
+//to pop the last inserted value out of stack
+int pop(Stack *s){
+    if(empty(*s)) return -1;
+    return s->a[s->top--];
+}
+
+//to peek the last inserted value in the stack
+int peek(Stack s){
+    if(empty(s)) return -1;
+    return s.a[s.top];
+}
+
+//to check if the parenthesis are balanced or not
+int checkBalancedParanthesis(char x[]){
+    int i;
+    Stack s;
+    init(&s);
+    for(i=0;i<strlen(x);i++){
+        if (x[i]=='(' || x[i]=='{' || x[i]=='[') push(&s,x[i]);
+        else if (x[i]==')' && pop(&s)!='(') return 0;
+        else if (x[i]=='}' && pop(&s)!='{') return 0;
+        else if (x[i]==']' && pop(&s)!='[') return 0;
+    }
+    if(!empty(s)) return 0;
+    return 1;
+}
+
+int main()
+{
+    char x[SIZE]="[(a+b)*c]/d";
+    printf("%d",checkBalancedParanthesis(x));
+    
+    return 0;
+}

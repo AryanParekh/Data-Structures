@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int power;
+    int coefficient;
+    struct Node *next;
+}Node;
+
+int add(Node **p,int coefficient,int power){
+    Node *newnode=(Node *)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->power=power;
+    newnode->coefficient=coefficient;
+    newnode->next=NULL;
+    if(*p==NULL) *p=newnode;
+    else{
+        Node *temp=*p;
+        while(temp->next!=NULL) temp=temp->next;
+        temp->next=newnode;
+    }
+    return 1;
+}
+
+Node * Addition(Node *eqn1,Node *eqn2){
+    Node *e1=eqn1;Node *e2=eqn2;
+    Node *e3=(Node*)malloc(sizeof(Node));
+    while(e1!=NULL || e2!=NULL){
+        if(e1->power>e2->power){
+            add(&e3,e1->coefficient,e1->power);
+            e1=e1->next;
+        }
+        else if(e1->power<e2->power){
+            add(&e3,e2->coefficient,e2->power);
+            e2=e2->next;
+        }
+        else{
+            add(&e3,e2->coefficient+e1->coefficient,e2->power);
+            e2=e2->next;
+            e1=e1->next;
+        }
+    }
+    return (Node*)e3;
+}
+
+Node * Subtraction(Node *eqn1,Node *eqn2){
+    Node *e1=eqn1;Node *e2=eqn2;
+    Node *e4=(Node*)malloc(sizeof(Node));
+    while(e1!=NULL || e2!=NULL){
+        if(e1->power>e2->power){
+            add(&e4,e1->coefficient,e1->power);
+            e1=e1->next;
+        }
+        else if(e1->power<e2->power){
+            add(&e4,e2->coefficient,e2->power);
+            e2=e2->next;
+        }
+        else{
+            add(&e4,e1->coefficient-e2->coefficient,e2->power);
+            e2=e2->next;
+            e1=e1->next;
+        }
+    }
+    return (Node*)e4;
+}
+
+void display(Node *p){
+    while(p!=NULL){
+        printf("%d,%d\n",p->coefficient,p->power);
+        p=p->next;
+    }
+}
+
+int main()
+{
+    Node *e1=NULL;
+    Node *e2=NULL;
+    add(&e1,14,5);
+    add(&e1,3,4);
+    add(&e1,4,1);
+    add(&e1,1,0);
+    
+    add(&e2,2,5);
+    add(&e2,2,2);
+    add(&e2,4,0);
+    
+    Node *e3;Node *e4;
+    e3=Addition(e1,e2);
+    display(e3);
+    e4=Subtraction(e1,e2);
+    printf("\n");
+    display(e4);
+    
+    
+
+    return 0;
+}
