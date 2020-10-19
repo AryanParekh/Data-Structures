@@ -23,11 +23,11 @@ int enqueue(CQueue *q,int value){
 }
 
 int dequeue(CQueue *q){
-    int value;
-    if(q->front==q->rear && q->rear!=-1) q->front=q->rear=-1;
     if(q->front==-1) return -1;
+    int value;
     value=q->a[q->front];
-    q->front=(q->front+1)%SIZE;
+    if(q->front==q->rear) q->front=q->rear=-1;
+    else q->front=(q->front+1)%SIZE;
     return value;
 }
 
