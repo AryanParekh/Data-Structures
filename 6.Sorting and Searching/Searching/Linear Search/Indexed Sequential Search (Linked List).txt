@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+//Structure to store Node
+typedef struct Node{
+    int data;
+    struct Node *next;
+}Node;
+
+//
+typedef struct Table{
+    Node *pointer;
+    struct Table *next;
+}Table;
+
+//Adding element at the end of single linked list
+int add(Node **p,int value){
+    Node *newnode=(Node *)malloc(sizeof(Node));
+    if(newnode==NULL) return 0;
+    newnode->data=value;
+    newnode->next=NULL;
+    if(*p==NULL) *p=newnode;
+    else{
+        Node *temp=*p;
+        while(temp->next!=NULL) temp=temp->next;
+        temp->next=newnode;
+    }
+    return 1;
+}
+
+//Displaying all elements in single linked list
+void display(Node *p){
+    while(p!=NULL){
+        printf("%d\t",p->data);
+        p=p->next;
+    }
+}
+
+//Creating Table of the desired gap
+int createTable(Node *p,Table **t,int gap){
+    int i;
+    if(p==NULL) return -1;
+    Table *newnode=(Table*)malloc(sizeof(Table));
+    if (newnode==NULL) return -1;
+    newnode->pointer=p;
+    newnode->next=NULL;
+    *t=newnode;
+    Table *temp=newnode;
+    for(i=2;p!=NULL;i++){
+        p=p->next;
+        if(i%gap==0){
+            Table *newnode=(Table*)malloc(sizeof(Table));
+            if (newnode==NULL) return -1;
+            newnode->pointer=p;
+            newnode->next=NULL;
+            temp->next=newnode;
+            temp=temp->next;
+        }
+    }
+    return 1;
+}
+
+void displayTable(Table *t){
+    while(t!=NULL){
+        printf("%d\t",t->pointer->data);
+        t=t->next;
+    }
+}
+
+int indexedSequentialSearch(Node *p,Table *t,int value){
+    Table *prev=t;
+    while(t!=NULL && value>(t->pointer->data)){
+        prev=t;
+        t=t->next;
+    }
+    if(t==NULL) return -1;
+    while(prev->pointer!=p) p=p->next;
+    while(t->pointer!=p){
+        if(p->data==value) break;
+        p=p->next;
+    }
+    if(t->pointer==p && p->data!=value) return -1;
+    return 1;
+}
+
+int main()
+{
+    Node *start=NULL;
+    Table *thead=NULL; 
+    add(&start,10);
+    add(&start,20);
+    add(&start,30);
+    add(&start,40);
+    add(&start,50);
+    add(&start,60);
+    add(&start,70);
+    add(&start,80);
+    add(&start,90);
+    add(&start,100);
+    add(&start,110);
+    add(&start,120);
+    add(&start,130);
+    add(&start,140);
+    add(&start,150);
+    createTable(start,&thead,5);
+    
+    display(start);
+    printf("\n");
+    displayTable(thead);
+    printf("\n");
+    printf("%d\n",indexedSequentialSearch(start,thead,150));
+
+    return 0;
+}

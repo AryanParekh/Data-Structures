@@ -1,0 +1,20 @@
+//Indexed Sequential Search
+#include <stdio.h>
+#define SIZE 20
+
+int indexedSequentialSearch(int arr[],int v,int n){
+    int i=0,j,gap=5;
+    while(i<n && arr[i]<=v) i+=gap;
+    for(j=i-gap;j<=i && arr[j]!=v;j++);
+    if(j<n && arr[j]==v) return j;
+    else return -1;
+}
+
+int main()
+{
+    int i;
+    int arr[SIZE]={5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
+    printf("%d\n",indexedSequentialSearch(arr,30,15));
+    
+    return 0;
+}

@@ -1,0 +1,20 @@
+//Sentinel search
+#include <stdio.h>
+#define SIZE 10
+
+int sentinelSearch(int arr[],int v,int n){
+    int i=0,t=arr[n-1];
+    arr[n-1]=v;
+    while(arr[i]!=v) i++;
+    arr[n-1]=t;
+    if(i<n-1 || arr[n-1]==v) return i;
+    else return -1;
+}
+
+int main()
+{
+    int arr[SIZE]={8,15,7,2,11,4,9};
+    printf("%d",sentinelSearch(arr,20,7));
+
+    return 0;
+}

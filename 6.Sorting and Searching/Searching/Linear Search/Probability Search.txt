@@ -1,0 +1,26 @@
+//Probability search
+#include <stdio.h>
+#define SIZE 10
+
+int probabilitySearch(int arr[],int v,int n){
+    int i=0,t;
+    while(i<n && arr[i]!=v) i++;
+    if(i<n){
+        if(i>0){
+            t=arr[i];
+            arr[i]=arr[i-1];
+            arr[i-1]=t;
+            return i-1;
+        }
+        else return i;
+    }
+    else return -1;
+}
+
+int main()
+{
+    int arr[SIZE]={8,15,7,2,11,4,9};
+    printf("%d",probabilitySearch(arr,8,7));
+
+    return 0;
+}
