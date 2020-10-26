@@ -7,7 +7,7 @@ typedef struct Node{
     struct Node *next;
 }Node;
 
-//
+//Structure to store table
 typedef struct Table{
     Node *pointer;
     struct Table *next;
@@ -37,7 +37,7 @@ void display(Node *p){
 }
 
 //Creating Table of the desired gap
-int createTable(Node *p,Table **t,int gap){
+int createTable(Node *p,Table **t,int n,int gap){
     int i;
     if(p==NULL) return -1;
     Table *newnode=(Table*)malloc(sizeof(Table));
@@ -46,7 +46,7 @@ int createTable(Node *p,Table **t,int gap){
     newnode->next=NULL;
     *t=newnode;
     Table *temp=newnode;
-    for(i=2;p!=NULL;i++){
+    for(i=2;i<=n;i++){
         p=p->next;
         if(i%gap==0){
             Table *newnode=(Table*)malloc(sizeof(Table));
@@ -55,11 +55,20 @@ int createTable(Node *p,Table **t,int gap){
             newnode->next=NULL;
             temp->next=newnode;
             temp=temp->next;
+            if(i/gap==n/gap) break;
         }
     }
+    if(p==NULL || p->next==NULL) return 1;
+    while(p->next!=NULL) p=p->next;
+    newnode=(Table*)malloc(sizeof(Table));
+    if (newnode==NULL) return -1;
+    newnode->pointer=p;
+    newnode->next=NULL;
+    temp->next=newnode;
     return 1;
 }
 
+//Displaying all the elements in table
 void displayTable(Table *t){
     while(t!=NULL){
         printf("%d\t",t->pointer->data);
@@ -67,6 +76,7 @@ void displayTable(Table *t){
     }
 }
 
+//Indexed sequential sort function using linked list
 int indexedSequentialSearch(Node *p,Table *t,int value){
     Table *prev=t;
     while(t!=NULL && value>(t->pointer->data)){
@@ -85,29 +95,21 @@ int indexedSequentialSearch(Node *p,Table *t,int value){
 
 int main()
 {
+    int i,n=15;
     Node *start=NULL;
     Table *thead=NULL; 
-    add(&start,10);
-    add(&start,20);
-    add(&start,30);
-    add(&start,40);
-    add(&start,50);
-    add(&start,60);
-    add(&start,70);
-    add(&start,80);
-    add(&start,90);
-    add(&start,100);
-    add(&start,110);
-    add(&start,120);
-    add(&start,130);
-    add(&start,140);
-    add(&start,150);
-    createTable(start,&thead,5);
+    for(i=1;i<=n;i++){
+        add(&start,i*10);
+    }
+    
+    createTable(start,&thead,n,6);
     
     display(start);
     printf("\n");
+    
     displayTable(thead);
     printf("\n");
+    
     printf("%d\n",indexedSequentialSearch(start,thead,150));
 
     return 0;
