@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE 20
+#define SIZE 30
 
 //structure of stack
 typedef struct Stack{
@@ -64,10 +64,8 @@ int preced(char op)
 }
 
 //to convert infix expression to postfix
-char* postfix(char x[]){
-    char y[SIZE];
+char* postfix(char y[]){
     int i,j,l;
-    strcpy(y,x);
     char *post=(char*)malloc(strlen(y));
     Stack s;
     init(&s);
@@ -117,23 +115,25 @@ char* prefix(char x[]){
         else y[j]=x[i];
     }
     char *post=postfix(y);
-    free(y);
     char *pre=(char*)malloc(strlen(x));
     c=0;
     while(post[c]!='\0') c++;
     for(j=c-1;j>=0;j--){
         pre[strlen(pre)]=post[j];
     }
+    free(y);
     return (char*)pre;
 }
 
 int main()
 {
-    char a[SIZE]="a+b*c";
+    char a[SIZE]="(((a+b)*c)/(d+e)+f)/g";
+    char b[SIZE]="(((a+b)*c)/(d+e)+f)/g";
     char*post;
     char*pre;
     post=postfix(a);
-    pre=prefix(a);
+    pre=prefix(b);
+    printf("%s\n",b);
     printf("%s\n",post);
     printf("%s\n",pre);
     free(post);
