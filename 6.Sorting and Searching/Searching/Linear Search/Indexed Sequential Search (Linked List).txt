@@ -40,6 +40,7 @@ void display(Node *p){
 int createTable(Node *p,Table **t,int n,int gap){
     int i;
     if(p==NULL) return -1;
+    if(n<gap) gap=n;
     Table *newnode=(Table*)malloc(sizeof(Table));
     if (newnode==NULL) return -1;
     newnode->pointer=p;
@@ -110,7 +111,7 @@ int main()
     displayTable(thead);
     printf("\n");
     
-    printf("%d\n",indexedSequentialSearch(start,thead,150));
+    printf("%d\n",indexedSequentialSearch(start,thead,40));
 
     return 0;
 }

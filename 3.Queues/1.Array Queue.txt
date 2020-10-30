@@ -13,14 +13,14 @@ void init(Queue *q){
     q->rear=-1;
 }
 
-int insert(Queue *q,int value){
+int enqueue(Queue *q,int value){
     if(q->rear==SIZE-1) return -1;
     if(q->front==-1) q->front++;
     q->a[++q->rear]=value;
     return 1;
 }
 
-int delete(Queue *q){
+int dequeue(Queue *q){
     int value;
     if(q->front==-1 || q->front>q->rear) return -1;
     value=q->a[q->front++];
@@ -43,12 +43,12 @@ int main()
 {
     Queue q;
     init(&q);
-    insert(&q,10);
-    insert(&q,20);
-    insert(&q,30);
-    insert(&q,40);
-    insert(&q,50);
-    printf("%d\n",delete(&q));
+    enqueue(&q,10);
+    enqueue(&q,20);
+    enqueue(&q,30);
+    enqueue(&q,40);
+    enqueue(&q,50);
+    printf("%d\n",dequeue(&q));
     printf("%d\n",peek(q));
     display(q);
     

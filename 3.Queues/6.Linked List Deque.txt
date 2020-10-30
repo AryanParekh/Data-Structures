@@ -1,0 +1,113 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int data;
+    struct Node *next;
+    struct Node *prev;
+}Node;
+
+typedef struct Deque{
+    Node *front;
+    Node *rear;
+}Deque;
+
+void init(Deque *q){
+    q->front=NULL;
+    q->rear=NULL;
+}
+
+int empty(Deque q){
+    return q.front==q.rear && q.front==NULL;
+}
+
+int insert_right(Deque *q,int value){
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return -1;
+    newnode->data=value;
+    if(empty(*q)) q->front=q->rear=newnode->next=newnode->prev=newnode;
+    else{
+        newnode->prev=q->rear;
+        newnode->next=q->front;
+        q->rear->next=newnode;
+        q->rear=newnode;
+        q->front->prev=q->rear;
+    }
+    return 1;
+}
+
+int insert_left(Deque *q,int value){
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return -1;
+    newnode->data=value;
+    if(empty(*q)) q->front=q->rear=newnode->next=newnode->prev=newnode;
+    else{
+        newnode->prev=q->rear;
+        newnode->next=q->front;
+        q->rear->next=newnode;
+        q->front->prev=newnode;
+        q->front=newnode;
+    }
+    return 1;
+}
+
+int delete_right(Deque *q){
+    int v;
+    if(empty(*q)) return -1;
+    Node *temp=q->rear;
+    if(q->front==q->rear) q->front=q->rear=NULL;
+    else{
+        q->rear->prev->next=q->rear->next;
+        q->rear=q->rear->prev;
+        q->front->prev=q->rear;
+    }
+    v=temp->data;
+    free(temp);
+    return v;
+}
+
+int delete_left(Deque *q){
+    int v;
+    if(empty(*q)) return -1;
+    Node *temp=q->front;
+    if(q->front==q->rear) q->front=q->rear=NULL;
+    else{
+        q->front->next->prev=q->front->prev;
+        q->front=q->front->next;
+        q->rear->next=q->front;
+    }
+    v=temp->data;
+    free(temp);
+    return v;
+}
+
+void display(Deque q){
+    Node *p=q.front;
+    do{
+        printf("%d\t",p->data);
+        p=p->next;
+    }while(p!=q.front);
+    printf("\n");
+}
+
+int main()
+{
+    Deque q;
+    init(&q);
+    insert_left(&q,20);
+    insert_left(&q,10);
+    insert_left(&q,5);
+    delete_left(&q);
+    insert_right(&q,30);
+    insert_right(&q,40);
+    insert_right(&q,50);
+    delete_right(&q);
+    insert_right(&q,50);
+    delete_left(&q);
+    insert_left(&q,15);
+    display(q);
+    
+
+    return 0;
+}
+

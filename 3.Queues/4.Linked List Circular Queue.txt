@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int data;
+    struct Node *next;
+}Node;
+
+typedef struct Cqueue{
+    Node *front;
+    Node *rear;
+}Cqueue;
+
+void init(Cqueue *q){
+    q->front=NULL;
+    q->rear=NULL;
+}
+
+int empty(Cqueue q){
+    return (q.front==q.rear && q.front==NULL);
+}
+
+int enqueue(Cqueue *q,int value){
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return -1;
+    newnode->data=value;
+    if(empty(*q)) q->front=q->rear=newnode;
+    else{
+        q->rear->next=newnode;
+        q->rear=q->rear->next;
+    }
+    q->rear->next=q->front;
+    return 1;
+}
+
+int dequeue(Cqueue *q){
+    int v;
+    if(empty(*q)) return -1;
+    Node *temp=q->front;
+    q->front=q->front->next;
+    v=temp->data;
+    if(temp==q->rear) q->front=q->rear=NULL;
+    else q->rear->next=q->front;
+    free(temp);
+    return v;
+}
+
+int peek(Cqueue q){
+    if(empty(q)) return -1;
+    return q.front->data;
+}
+
+void display(Cqueue q){
+    if(empty(q)) return;
+    Node *temp=q.front;
+    do{
+        printf("%d\t",temp->data);
+        temp=temp->next;
+    }while(temp!=q.front);
+}
+
+int main()
+{
+    Cqueue q;
+    init(&q);
+    enqueue(&q,10);
+    enqueue(&q,20);
+    enqueue(&q,30);
+    enqueue(&q,40);
+    enqueue(&q,50);
+    printf("%d\n",dequeue(&q));
+    printf("%d\n",peek(q));
+    display(q);
+    
+    return 0;
+}
+

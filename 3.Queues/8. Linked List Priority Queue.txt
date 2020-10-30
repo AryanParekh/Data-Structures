@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node{
+    int data;
+    int priority;
+    struct Node *next;
+}Node;
+
+typedef struct PQueue{
+    struct Node *front;
+    struct Node *rear;
+}PQueue;
+
+void init(PQueue *q){
+    q->front=NULL;
+    q->rear=NULL;
+}
+
+int empty(PQueue q){
+    return (q.front==q.rear && q.front==NULL);
+}
+
+int enqueue(PQueue *q,int value,int priority){
+    Node *newnode=(Node*)malloc(sizeof(Node));
+    if(newnode==NULL) return -1;
+    newnode->data=value;
+    newnode->priority=priority;
+    if(empty(*q)){
+        q->front=q->rear=newnode;
+        newnode->next=NULL;
+    }
+    else if(priority<q->front->priority){
+        newnode->next=q->front;
+        q->front=newnode;
+    }
+    else{
+        Node *prev=q->front;
+        Node *temp=q->front;
+        while(temp!=NULL && priority>=temp->priority){
+            prev=temp;
+            temp=temp->next;
+        }
+        prev->next=newnode;
+        newnode->next=temp;
+        if(temp==NULL) q->rear=newnode;
+    }
+    return 1;
+}
+
+int dequeue(PQueue *q){
+    int v;
+    if(empty(*q)) return -1;
+    Node *temp=q->front;
+    q->front=q->front->next;
+    v=temp->data;
+    if(temp==q->rear) q->front=q->rear=NULL;
+    free(temp);
+    return v;
+}
+
+int peek(PQueue q){
+    if(empty(q)) return -1;
+    return q.front->data;
+}
+
+void display(PQueue q){
+    if(empty(q)) return;
+    Node *temp=q.front;
+    while(temp!=NULL){
+        printf("%d\t",temp->data);
+        temp=temp->next;
+    }
+}
+
+int main()
+{
+    PQueue q;
+    init(&q);
+    enqueue(&q,10,10);
+    enqueue(&q,20,3);
+    enqueue(&q,30,7);
+    enqueue(&q,40,11);
+    enqueue(&q,50,9);
+    enqueue(&q,60,1);
+    printf("%d\n",dequeue(&q));
+    printf("%d\n",peek(q));
+    display(q);
+    
+    return 0;
+}
