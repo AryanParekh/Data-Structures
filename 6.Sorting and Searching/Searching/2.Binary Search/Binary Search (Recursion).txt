@@ -1,0 +1,18 @@
+#include <stdio.h>
+#define SIZE 20
+
+int binarySearch(int arr[],int high,int low,int value){
+    if(low>high) return -1;
+    int mid=(low+high)/2;
+    if (arr[mid]==value) return mid;
+    else if(arr[mid]>value) binarySearch(arr,mid-1,low,value);
+    else binarySearch(arr,high,mid+1,value);
+}
+
+int main() {
+    int arr[SIZE]={5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
+    printf("%d",binarySearch(arr,14,0,35));
+    printf("%d",binarySearch(arr,14,0,22));
+    
+    return 0;
+}

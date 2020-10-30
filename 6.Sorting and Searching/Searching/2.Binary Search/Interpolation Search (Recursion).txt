@@ -1,0 +1,20 @@
+//imp: used only when elements stored have a constant gap
+#include <stdio.h>
+#define SIZE 20
+
+int interpolationSearch(int arr[],int high,int low,int value){
+    if(low>high) return -1;
+    int mid=low+((value-arr[low])*(high-low)/(arr[high]-arr[low]));
+    if (arr[mid]==value) return mid;
+    else if(arr[mid]>value) interpolationSearch(arr,mid-1,low,value);
+    else interpolationSearch(arr,high,mid+1,value);
+}
+
+int main() {
+    int arr[SIZE]={5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
+    printf("%d",interpolationSearch(arr,14,0,15));
+    printf("%d",interpolationSearch(arr,14,0,50));
+    printf("%d",interpolationSearch(arr,14,0,22));
+    
+    return 0;
+}
