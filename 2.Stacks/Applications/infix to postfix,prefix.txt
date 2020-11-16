@@ -101,6 +101,7 @@ char* postfix(char y[]){
         char p=(char)pop(&s);
         post[strlen(post)]=p;
     }
+    y[strlen(y)-1]='\0';
     return (char*)post;
 }
 
@@ -128,16 +129,13 @@ char* prefix(char x[]){
 int main()
 {
     char a[SIZE]="(((a+b)*c)/(d+e)+f)/g";
-    char b[SIZE]="(((a+b)*c)/(d+e)+f)/g";
     char*post;
     char*pre;
     post=postfix(a);
-    pre=prefix(b);
-    printf("%s\n",b);
-    printf("%s\n",post);
+    pre=prefix(a);
+    printf("%s\n",a);
     printf("%s\n",pre);
-    free(post);
-    free(pre);
+    printf("%s\n",post);
     
     return 0;
 }

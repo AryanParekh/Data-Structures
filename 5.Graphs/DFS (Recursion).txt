@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 8
+
+void dfs(int a[][SIZE],int visited[],int s){
+    int i;
+    printf("%c ",s+65);
+    visited[s]=1;
+    for(i=0;i<SIZE;i++){
+        if(a[s][i]&&visited[i]==0){
+            dfs(a,visited,i);
+        }
+    }
+}
+
+void main(){
+    int a[SIZE][SIZE]={ {0,1,1,1,1,0,0,0},
+                        {1,0,0,0,0,1,0,0},
+                        {1,0,0,0,0,1,0,0},
+                        {1,0,0,0,0,0,1,0},
+                        {1,0,0,0,0,0,1,0},
+                        {0,1,1,0,0,0,0,1},
+                        {0,0,0,1,1,0,0,1},
+                        {0,0,0,0,0,1,1,0} };
+    int visited[SIZE]={0};
+    dfs(a,visited,0);
+}

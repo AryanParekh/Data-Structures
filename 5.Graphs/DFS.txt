@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 8
+
+void dfs (int adj[][SIZE], int visited [], int start ){ 
+    int stack[SIZE];
+    int top=-1;
+    int i;
+    printf("%c ",start +65);
+    visited[start] = 1;
+    stack[++top]=start;
+    while(top!=-1)
+    {
+        start=stack[top];
+        for(i=0; i<SIZE; i++){
+            if (adj[start][i] && !visited[i] ){ 
+                stack[++top]=i;
+                printf("%c ",i +65);
+                visited[i] = 1;
+                break;
+            }
+        }
+        if(i==SIZE) top--;
+    }
+}
+
+void main(){
+    int a[SIZE][SIZE]={ {0,1,1,1,1,0,0,0},
+                        {1,0,0,0,0,1,0,0},
+                        {1,0,0,0,0,1,0,0},
+                        {1,0,0,0,0,0,1,0},
+                        {1,0,0,0,0,0,1,0},
+                        {0,1,1,0,0,0,0,1},
+                        {0,0,0,1,1,0,0,1},
+                        {0,0,0,0,0,1,1,0} };
+    int visited[SIZE]={0};
+    dfs(a,visited,0);
+}

@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define SIZE 20
+#define SIZE 15
 
 int binarySearch(int arr[],int value,int n){
     int low=0,high=n-1;
@@ -15,8 +15,8 @@ int binarySearch(int arr[],int value,int n){
 
 int main() {
     int arr[SIZE]={5,10,15,20,25,30,35,40,45,50,55,60,65,70,75};
-    printf("%d",binarySearch(arr,35,15));
-    printf("%d",binarySearch(arr,22,15));
+    printf("%d\n",binarySearch(arr,35,SIZE));
+    printf("%d\n",binarySearch(arr,22,SIZE));
     
     return 0;
 }

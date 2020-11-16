@@ -30,14 +30,14 @@ int enqueue(PQueue *q,int value,int priority){
         q->front=q->rear=newnode;
         newnode->next=NULL;
     }
-    else if(priority<q->front->priority){
+    else if(priority>q->front->priority){
         newnode->next=q->front;
         q->front=newnode;
     }
     else{
         Node *prev=q->front;
         Node *temp=q->front;
-        while(temp!=NULL && priority>=temp->priority){
+        while(temp!=NULL && priority<=temp->priority){
             prev=temp;
             temp=temp->next;
         }
@@ -82,7 +82,7 @@ int main()
     enqueue(&q,30,7);
     enqueue(&q,40,11);
     enqueue(&q,50,9);
-    enqueue(&q,60,1);
+    enqueue(&q,60,4);
     printf("%d\n",dequeue(&q));
     printf("%d\n",peek(q));
     display(q);
