@@ -38,6 +38,7 @@ int delete_right(Deque *q){
     value=q->a[q->rear];
     if(q->front==q->rear) q->front=q->rear=-1;
     else q->rear=(q->rear-1)%SIZE;
+    if(q->rear==-1 && q->front!=-1) q->rear=SIZE-1;
     return value;
 }
 
